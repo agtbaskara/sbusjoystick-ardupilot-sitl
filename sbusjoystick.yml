@@ -1,0 +1,53 @@
+description: >
+  Support for sbusjoystick-ardupilot-sitl
+match:
+  - LeafLabs Maple*
+controls:
+  - channel: 1
+    type: axis
+    id: 0
+  - channel: 2
+    type: axis
+    id: 1
+  - channel: 3
+    type: axis
+    id: 2
+  - channel: 4
+    type: axis
+    id: 3
+  - channel: 5
+    type: multibutton
+    buttons:
+      - id: 0
+        value: 988
+      - id: 1
+        value: 1500
+      - id: 2
+        value: 2012
+  - channel: 6
+    type: multibutton
+    buttons:
+      - id: 3
+        value: 988
+      - id: 4
+        value: 1500
+      - id: 5
+        value: 2012
+  - channel: 7
+    type: multibutton
+    buttons:
+      - id: 6
+        value: 988
+      - id: 7
+        value: 1500
+      - id: 8
+        value: 2012
+  - channel: 8
+    type: multibutton
+    buttons:
+      - id: 9
+        value: 988
+      - id: 10
+        value: 1500
+      - id: 11
+        value: 2012
