@@ -3,7 +3,7 @@
 ## Requirement
 - PC with Linux OS (Tested on Ubuntu 18.04)
 - RC Transmitter (Tested on Frsky Taranis QX7)
-- RC Receiver (Tested on Frsky X8R)
+- RC Receiver (Tested on Frsky X8R and FX400R)
 - SBUS to USB Converter board (https://oscarliang.com/diy-sbus-usb-converter/)
 
 ## Instruction
@@ -14,8 +14,10 @@
 - Copy `sbusjoystick.yml` to `~/.local/lib/python2.7/site-packages/MAVProxy/modules/mavproxy_joystick/joysticks`
 
 ## Notes
-Channel 5-8 are for 3 position switch
+Channels 1-4 are for Roll, Pitch, Throttle, and Yaw
+Channels 5-8 are for 4 Switch (High, Mid, Low)
 
 ## Reference
 - Source code based on https://github.com/DarrenLouw/SBUS
 - Hardware based on https://oscarliang.com/diy-sbus-usb-converter/
+- Configuration based on https://github.com/ArduPilot/MAVProxy/blob/master/docs/JOYSTICKS.md
