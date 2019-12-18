@@ -1,53 +1,74 @@
-#include <SBUS.h>
-#include <USBComposite.h>
+#include "Joystick.h"
+#include "FUTABA_SBUS.h"
 
-USBHID HID;
-HIDJoystick Joystick(HID);
-SBUS sbus(Serial2);
+Joystick_ Joystick;
+FUTABA_SBUS sbus;
 
-void setup()
-{
+uint16_t channels[12];
+
+void setup() {
+  Joystick.setXAxisRange(172, 1811);
+  Joystick.setYAxisRange(172, 1811);
+  Joystick.setRxAxisRange(172, 1811);
+  Joystick.setRyAxisRange(172, 1811);
+  Joystick.setZAxisRange(172, 1811);
+  Joystick.setRzAxisRange(172, 1811);
+
   sbus.begin();
-  setupTimer2();
-  HID.begin(HID_JOYSTICK);
-  Joystick.setManualReportMode(true);
+
+  Joystick.begin(false);
 }
 
-void loop()
-{
-    Joystick.X(map(sbus._channels[0], 172, 1811, 0, 1023));
-    Joystick.Y(map(sbus._channels[1], 172, 1811, 0, 1023));
-    Joystick.Xrotate(map(sbus._channels[2], 172, 1811, 0, 1023));
-    Joystick.Yrotate(map(sbus._channels[3], 172, 1811, 0, 1023));
-    
-    Joystick.button(1,sbus._channels[4] <= 982);
-    Joystick.button(2,sbus._channels[4] > 982 && sbus._channels[4] < 1002);
-    Joystick.button(3,sbus._channels[4] >= 1002);
-    
-    Joystick.button(4,sbus._channels[5] <= 982);
-    Joystick.button(5,sbus._channels[5] > 982 && sbus._channels[5] < 1002);
-    Joystick.button(6,sbus._channels[5] >= 1002);
+void loop() {
+  sbus.FeedLine();
+  if (sbus.toChannels == 1) {
+    sbus.UpdateServos();
+    sbus.UpdateChannels();
+    sbus.toChannels = 0;
 
-    Joystick.button(7,sbus._channels[6] <= 982);
-    Joystick.button(8,sbus._channels[6] > 982 && sbus._channels[6] < 1002);
-    Joystick.button(9,sbus._channels[6] >= 1002);
+    channels[0] = sbus.channels[0];
+    channels[1] = sbus.channels[1];
+    channels[2] = sbus.channels[2];
+    channels[3] = sbus.channels[3];
+    channels[4] = sbus.channels[4];
+    channels[5] = sbus.channels[5];
+    channels[6] = sbus.channels[6];
+    channels[7] = sbus.channels[7];
+    channels[8] = sbus.channels[8];
+    channels[9] = sbus.channels[9];
+    channels[10] = sbus.channels[10];
+    channels[11] = sbus.channels[11];
+  }
 
-    Joystick.button(10,sbus._channels[7] <= 982);
-    Joystick.button(11,sbus._channels[7] > 982 && sbus._channels[7] < 1002);
-    Joystick.button(12,sbus._channels[7] >= 1002);
-    
-    Joystick.send();
-}
+  Joystick.setXAxis(channels[0]);
+  Joystick.setYAxis(channels[1]);
+  Joystick.setRxAxis(channels[2]);
+  Joystick.setRyAxis(channels[3]);
 
-void setupTimer2()
-{
-  Timer2.setMode(TIMER_CH1, TIMER_OUTPUTCOMPARE);
-  Timer2.setPeriod(249);
-  Timer2.setCompare(TIMER_CH1, 1);
-  Timer2.attachInterrupt(TIMER_CH1, sbusProcess);
-}
+  Joystick.setButton(0, channels[4] <= 982);
+  Joystick.setButton(1, channels[4] > 982 && channels[4] < 1002);
+  Joystick.setButton(2, channels[4] >= 1002);
 
-void sbusProcess()
-{
-  sbus.process();
+  Joystick.setButton(3, channels[5] <= 982);
+  Joystick.setButton(4, channels[5] > 982 && channels[5] < 1002);
+  Joystick.setButton(5, channels[5] >= 1002);
+
+  Joystick.setButton(6, channels[6] <= 982);
+  Joystick.setButton(7, channels[6] > 982 && channels[6] < 1002);
+  Joystick.setButton(8, channels[6] >= 1002);
+
+  Joystick.setButton(9, channels[7] <= 982);
+  Joystick.setButton(10, channels[7] > 982 && channels[7] < 1002);
+  Joystick.setButton(11, channels[7] >= 1002);
+
+  Joystick.setButton(12, channels[8] <= 982);
+  Joystick.setButton(13, channels[8] >= 1002);
+
+  Joystick.setButton(14 ,channels[9] <= 982);
+  Joystick.setButton(15 ,channels[9] >= 1002);
+
+  Joystick.setZAxis(channels[10]);
+  Joystick.setRzAxis(channels[11]);
+  
+  Joystick.sendState();
 }
